@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Tracking colis</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' charset='UTF-8' />
+    <link rel="stylesheet" type="text/css" href="w3.css">
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="canvasjs.min.js"></script>
+    <script>
+        window.onload = function () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var rep = this.responseText;
+                    document.getElementById("valColis").innerHTML = rep;
+                    if (rep == "oui") {
+                        document.getElementById("valColis").style.color = "green";
+                    } else {
+                        document.getElementById("valColis").style.color = "red";
+                    }
+                }
+            };
+            http.open("GET", "val_colis", false);
+            xhttp.send();
+        }
+    </script>
+</head>
+
+<body class="w3-animate-opacity">
+
+    <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <a href="angle.html" class="w3-bar-item w3-button">
+            <h3><i>Angle d'inclinaison</i></h3>
+        </a>
+        <a href="chute.html" class="w3-bar-item w3-button">
+            <h3><i>Chute</i></h3>
+        </a>
+        <a href="temp.html" class="w3-bar-item w3-button">
+            <h3><i>Température</i></h3>
+        </a>
+        <a href="lum.html" class="w3-bar-item w3-button">
+            <h3><i>Luminosité</i></h3>
+        </a>
+    </div>
+    <div class=" w3-card  w3-red">
+        <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+        <div class="w3-red w3-padding-small w3-center">
+            <h1>Tracking colis</h1>
+        </div>
+    </div>
+
+    <div class="w3-margin w3-card w3-padding-24">
+        <em>
+            <h2 class="w3-center">Bienvenue !</h2>
+        </em>
+        <p class="w3-margin" style="text-justify: auto;"><br> Vous avez accès aux informations relatives à l'inclinaison
+            en X et Y,
+            à
+            la température et à la luminosité en fonction du temps. Cela vous permet de voir si votre colis a été bien
+            traité ou non.</p>
+    </div>
+
+    <div>
+        <h3>
+            <p class="w3-center">
+                Votre colis est dans un bon état : <b><span id="valColis">0</span></b>
+            </p>
+        </h3>
+        <table style="margin-left: 30%;">
+            <tr>
+                <td><a href="angle.html"><img src="angle.png" style="width:60%;"></a></td>
+                <td><a href="temp.html"><img src="temp.png" style="width:60%;"></a></td>
+            </tr>
+            <tr>
+                <td><a href="chute.html"><img src="chute.png" style="width:60%;"></a></td>
+                <td><a href="lum.html"><img src="lum.png" style="width:60%;"></a></td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="w3-margin w3-card w3-padding-24">
+        <h2 class="w3-center">Trajet de votre colis :</h2>
+        <img src="map.png" alt="Trajet" class="w3-center" style="width:80%;margin-left:10%">
+    </div>
+
+    <div class="w3-card-4 w3-padding-small w3-center">
+        <div class="w3-container w3-center">
+            <p>Votre livreur : Pierre Yois.<br>
+                Agé de 24 ans, il travaille avec nous depuis 2 ans.<br>Son point fort ?<br>Il est ponctuel et
+                prendra toujours soin de votre précieux colis !</p>
+            <a class="w3-jumbo " title="Stars" style="color: yellow;">★★★★</a><span class="w3-jumbo">★</span>
+        </div>
+    </div>
+
+    <div class="w3-padding w3-center">
+        <em><a href="https://www.epf.fr" style="text-decoration: none;">EPF graduate school of Engeneering</a></em>
+    </div>
+</body>
+
+</html>

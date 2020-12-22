@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Tracking colis</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' charset='UTF-8' />
+    <link rel="stylesheet" type="text/css" href="w3.css">
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="canvasjs.min.js"></script>
+    <script>
+        window.onload = function () {
+            var csvString = "";
+            var xhttp = new XMLHttpRequest();//création de la requete 
+            xhttp.open("GET", "liredata", false);//Get = HTTP_GET, liredata = nom de la requete, false = synchrone
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) { //200 = statut OK
+                    csvString = this.responseText; //stock le réponse du serveur dans le string csvString
+                }
+            };
+            xhttp.send(); //Envoi de la requpete
+            console.log("contenu JS :") //DBEUG
+           // console.log(csvString); //DEBUG
+
+            var chart2 = new CanvasJS.Chart("chartContainer2", {
+                animationEnabled: true,
+                animationDuration: 5000,
+                zoomEnabled: true,
+                theme: "dark2",
+                title: {
+                    text: "Evolution temporelle de la température",
+                    fontFamily: "Calibri,Optima,Arial,sans-serif",
+                    verticalAlign: "top",
+                    horizontalAlign: "center"
+                },
+                axisX: {
+                    title: "Time",
+                    crosshair: {
+                        enabled: true
+                    }
+                },
+                axisY: {
+                    title: "Température",
+                    suffix: "°C",
+                    includeZero: true
+                },
+                data: [{
+                    type: "spline",
+                    name: "Température",
+                    connectNullData: true,
+                    xValueType: "dateTime",
+                    xValueFormatString: "DD MMM YYYY HH:MM:ss",
+                    yValueFormatString: "#,###.##°C",
+                    showInLegend: "true",
+                    dataPoints: getDataPointsFromCSV(csvString, 3, false,)
+                }, {
+                    type: "spline",
+                    name: "Limite supérieur",
+                    connectNullData: true,
+                    xValueType: "dateTime",
+                    xValueFormatString: "DD MMM YYYY HH:MM:ss",
+                    yValueFormatString: "#,###.##°C",
+                    showInLegend: "true",
+                    markerType: "none",
+                    dataPoints: getDataPointsFromCSV(csvString, 3, true, 25.0)
+                }, {
+                    type: "spline",
+                    name: "Limite inférieur",
+                    connectNullData: true,
+                    xValueType: "dateTime",
+                    xValueFormatString: "DD MMM YYYY HH:MM:ss",
+                    yValueFormatString: "#,###.##°C",
+                    showInLegend: "true",
+                    markerType: "none",
+                    dataPoints: getDataPointsFromCSV(csvString, 3, true, 5.0)
+                }]
+            });
+            chart2.render();
+        }
+    </script>
+
+
+</head>
+
+<body class="w3-animate-opacity">
+
+    <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+        <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+        <a href="/" class="w3-bar-item w3-button">
+            <h3><i>Accueil</i></h3>
+        </a>
+        <a href="angle.html" class="w3-bar-item w3-button">
+            <h3><i>Angle d'inclinaison</i></h3>
+        </a>
+        <a href="chute.html" class="w3-bar-item w3-button">
+            <h3><i>Chute</i></h3>
+        </a>
+        <a href="lum.html" class="w3-bar-item w3-button">
+            <h3><i>Luminosité</i></h3>
+        </a>
+    </div>
+    <div class=" w3-card w3-red">
+        <button class="w3-button w3-teal w3-xlarge" onclick="w3_open()">☰</button>
+        <div class="w3-red w3-padding-small w3-center">
+            <h1>Tracking colis</h1>
+        </div>
+    </div>
+
+    <div class="w3-margin w3-card w3-padding-24">
+        <em>
+            <h2 class="w3-center">Température de votre colis.</h2>
+        </em>
+        <p class="w3-margin w3-center style=" text-justify: auto;"><br>Vous avez accès aux températures auxquelles votre
+            colis a été soumis.</p>
+    </div>
+
+    <div id="chartContainer2" style="height: 370px; margin: 5px;"></div>
+    <div><br><br></div>
+
+    <div class="w3-padding w3-center">
+        <em><a href="https://www.epf.fr" style="text-decoration: none;">EPF graduate school of Engeneering</a></em>
+    </div>
+</body>
+
+</html>
