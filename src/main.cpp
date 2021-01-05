@@ -99,13 +99,13 @@ String dataCapture() //méthode de capture des données
   vitessez = (a_i + a_i_1) / 2;
   vitessez = vitessez * Te;
   a_i_1 = a_i;
-  vitessez = (vitessez * 100) - 3; //converison en cm/s
+  vitessez = (vitessez * 100) - 8.6; //converison en cm/s
   ////lecture  l'heure du RTC
   now = rtc.now();
   ////lecture de la luminosité
   visibleLux = TSL2561.readVisibleLux();
 
-  if (anglex > 45.0 || angley > 45.0 || anglex < -45.0 || angley < -45.0 || temperature < 5 || temperature > 25 || visibleLux > 200)
+  if (anglex > 45.0 || angley > 45.0 || anglex < -45.0 || angley < -45.0 || temperature < 5 || temperature > 25 || visibleLux > 100 || vitessez > 10)
   {
     bon = false;
   }
@@ -165,12 +165,13 @@ void initWifi() //méthode d'initialisation du wifi
     display.clearDisplay();
     display.setCursor(0, 0);
     display.setTextSize(1);
-    display.print("Wifi : ");
+    display.println("   Wifi : ");
+    display.print("   \n    ");
     display.println((String)ssid); //affichage du ssid sur l'écran
-    display.println("");
+    /*display.println("");
     display.print("Site : ");
-    display.print(WiFi.softAPIP()); //affichage de l'IP
-    display.display();              //affichage
+    display.print(WiFi.softAPIP()); //affichage de l'IP*/
+    display.display(); //affichage
   }
   else
   {
@@ -249,19 +250,6 @@ void initServerSPIFFS()
   server.on("/map.png", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(LittleFS, "/map.png", "image/png");
   });
-  server.on("/chute.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(LittleFS, "/chute.png", "image/png");
-  });
-  server.on("/lum.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(LittleFS, "/lum.png", "image/png");
-  });
-  server.on("/angle.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(LittleFS, "/angle.png", "image/png");
-  });
-  server.on("/temp.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(LittleFS, "/temp.png", "image/png");
-  });
-
   server.on("/val_colis", HTTP_GET, [](AsyncWebServerRequest *request) {
     String rep = "";
     if (bon)
@@ -272,7 +260,7 @@ void initServerSPIFFS()
     {
       rep = "non";
     }
-    request->send(200, rep, "text/plain");
+    request->send(200, "text/plain", rep);
   });
 
   server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request) {

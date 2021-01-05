@@ -9,9 +9,10 @@
     <script type="text/javascript" src="canvasjs.min.js"></script>
     <script>
         window.onload = function () {
-            var xhttp = new XMLHttpRequest();
+            var xhttp = new XMLHttpRequest();//création de la requete 
+            xhttp.open("GET", "val_colis", false);//Get = HTTP_GET, liredata = nom de la requete, false = synchrone
             xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState == 4 && this.status == 200) { //200 = statut OK
                     var rep = this.responseText;
                     document.getElementById("valColis").innerHTML = rep;
                     if (rep == "oui") {
@@ -19,10 +20,10 @@
                     } else {
                         document.getElementById("valColis").style.color = "red";
                     }
+                    // console.debug("Contenu JS : " + rep);
                 }
             };
-            http.open("GET", "val_colis", false);
-            xhttp.send();
+            xhttp.send(); //Envoi de la requpete
         }
     </script>
 </head>
@@ -68,17 +69,6 @@
                 Votre colis est dans un bon état : <b><span id="valColis">0</span></b>
             </p>
         </h3>
-        <table style="margin-left: 30%;">
-            <tr>
-                <td><a href="angle.html"><img src="angle.png" style="width:60%;"></a></td>
-                <td><a href="temp.html"><img src="temp.png" style="width:60%;"></a></td>
-            </tr>
-            <tr>
-                <td><a href="chute.html"><img src="chute.png" style="width:60%;"></a></td>
-                <td><a href="lum.html"><img src="lum.png" style="width:60%;"></a></td>
-            </tr>
-        </table>
-
     </div>
 
     <div class="w3-margin w3-card w3-padding-24">
